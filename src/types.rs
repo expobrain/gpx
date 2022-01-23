@@ -171,6 +171,7 @@ pub struct Track {
     pub comment: Option<String>,
 
     /// User description of track.
+    #[cfg_attr(feature = "use-serde", serde(alias = "desc"))]
     pub description: Option<String>,
 
     /// Source of data. Included to give user some idea of reliability
@@ -178,6 +179,7 @@ pub struct Track {
     pub source: Option<String>,
 
     /// Links to external information about the track.
+    #[cfg_attr(feature = "use-serde", serde(default))]
     pub links: Vec<Link>,
 
     /// Type (classification) of track.
@@ -190,6 +192,7 @@ pub struct Track {
     /// connected in order. To represent a single GPS track where GPS reception
     /// was lost, or the GPS receiver was turned off, start a new Track Segment
     /// for each continuous span of track data.
+    #[cfg_attr(feature = "use-serde", serde(default, alias = "trkseg"))]
     pub segments: Vec<TrackSegment>,
     /* extensions */
     /* trkSeg */
@@ -233,6 +236,7 @@ impl From<Track> for Geometry<f64> {
 pub struct TrackSegment {
     /// Each Waypoint holds the coordinates, elevation, timestamp, and metadata
     /// for a single point in a track.
+    #[cfg_attr(feature = "use-serde", serde(alias = "trkpt"))]
     pub points: Vec<Waypoint>,
     /* extensions */
 }
@@ -289,6 +293,7 @@ impl Default for GpxPoint {
 #[cfg_attr(feature = "use-serde", derive(Serialize, Deserialize))]
 pub struct Waypoint {
     /// The geographical point.
+    #[cfg_attr(feature = "use-serde", serde(flatten))]
     point: GpxPoint,
 
     /// Elevation (in meters) of the point.
@@ -321,6 +326,7 @@ pub struct Waypoint {
     pub source: Option<String>,
 
     /// Links to additional information about the waypoint.
+    #[cfg_attr(feature = "use-serde", serde(default))]
     pub links: Vec<Link>,
 
     /// Text of GPS symbol name. For interchange with other programs, use the
